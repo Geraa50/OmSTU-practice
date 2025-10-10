@@ -11,24 +11,19 @@ namespace sumOfNumbersWithOne
             int full_n = 0;
             int cifra = 0;
             int answer = 0;
-            while (true)
+            while (n != 0)
             {
                 n = Convert.ToInt32(Console.ReadLine());
-
-                if (n == 0)
-                {
-                    break;
-                }
                 full_n = n;
                 while (n != 0)
                 {
                     cifra = n % 10;
-                    n /= 10;
                     if (cifra == 1)
                     {
                         answer += full_n;
                         break;
                     }
+                    n /= 10;
                 }
             }
             Console.WriteLine(answer);
