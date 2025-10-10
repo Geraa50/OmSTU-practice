@@ -1,4 +1,5 @@
 using System;
+using System.Formats.Asn1;
 
 namespace sumOfNumbersWithOne
 {
@@ -6,24 +7,26 @@ namespace sumOfNumbersWithOne
     {
         static void Main()
         {
-            int n = Convert.ToInt32(Console.ReadLine());
-            int answer = 0;
-            int flag = 0; // число не подходит, если 1 то подходит
+            int n = 0;
+            int full_n = 0;
             int cifra = 0;
-            int chislo = 0;
-            int chislo_full = 0;
-            for (int i = 1; i <= n; i++)
+            int answer = 0;
+            while (true)
             {
-                flag = 0;
-                chislo = Convert.ToInt32(Console.ReadLine());
-                chislo_full = chislo;
-                while (chislo > 1)
+                n = Convert.ToInt32(Console.ReadLine());
+
+                if (n == 0)
                 {
-                    cifra = chislo % 10;
-                    chislo /= 10;
-                    if (chislo == 1 || cifra == 1)
+                    break;
+                }
+                full_n = n;
+                while (n != 0)
+                {
+                    cifra = n % 10;
+                    n /= 10;
+                    if (cifra == 1)
                     {
-                        answer += chislo_full;
+                        answer += full_n;
                         break;
                     }
                 }
