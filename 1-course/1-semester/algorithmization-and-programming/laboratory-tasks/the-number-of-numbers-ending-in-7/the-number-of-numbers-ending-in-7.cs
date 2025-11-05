@@ -15,6 +15,10 @@ namespace theNumberOfNumbersEndingIn7
             while (n != 0)
             {
                 n = Convert.ToInt32(Console.ReadLine());
+                if (n < 0)
+                {
+                    n *= -1;
+                }
                 cifra = n % 10;
                 if (cifra == 7)
                 {
