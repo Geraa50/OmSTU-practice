@@ -1,14 +1,18 @@
+
+// паук и муха
+using System.Collections;
+
 class Program
 {
     static int Coord(int x, int y, int z, int x_c, int y_c, int z_c)
     {
         int answer = 0;
         if (x == 0) answer = 1;
-        if (y == 0) answer = 2;
-        if (z == 0) answer = 3;
-        if (x == x_c) answer = 4;
-        if (y == y_c) answer = 5;
-        if (z == z_c) answer = 6;
+        else if (y == 0) answer = 2;
+        else if (z == 0) answer = 3;
+        else if (x == x_c) answer = 4;
+        else if (y == y_c) answer = 5;
+        else if (z == z_c) answer = 6;
         return answer;
     }
     static void Main()
@@ -46,6 +50,110 @@ class Program
         Console.WriteLine(spiderZeroCord);
         Console.WriteLine(muhaZeroCord);
         
+        int locationOption = spiderZeroCord - muhaZeroCord;
+        // если разница = 0 то на одной стороне, если разница 3 то на параллельных в остальных случаях означает на соседних
+        
+        // на одной стороне -- РЕАЛИЗОВАНО
+        // на соседних сторонах -- 
+        // на параллельных сторонах -- 
+        if (locationOption == 0)
+        {
+            // на одной стороне
+            Console.WriteLine("Паук и муха находятся на одной стороне");
+            int x = (int)Math.Pow(myha_x - spider_x, 2);
+            int y = (int)Math.Pow(myha_y - spider_y, 2);
+            int z = (int)Math.Pow(myha_z - spider_z, 2);
+            /*
+            Console.WriteLine(myha_x);
+            Console.WriteLine(myha_y);
+            Console.WriteLine(myha_z);
+            Console.WriteLine(spider_x);
+            Console.WriteLine(spider_y);
+            Console.WriteLine(spider_z);
+
+            Console.WriteLine(x);
+            Console.WriteLine(y);
+            Console.WriteLine(z);
+            */
+            Console.WriteLine($"{Math.Sqrt(x + y + z):F3}");    
+        }
+        else if (locationOption == 3 || locationOption == -3)
+        {
+            Console.WriteLine("Паук и муха находятся на параллельных сторонах");
+            int[] answers = new int[4]; // перебрать все возможные варианты прохода через все 4 стороны
+            // и через max найти кротчайший
+            // при этом будут такие варианты + x - x + y - y вот они 4 варианта проекции
+            double[] ans = new double[4];
+
+            if ((spider_x == 0 && myha_x == korob_x) || (spider_x == korob_x && myha_x == 0))
+            {
+                // через потолок
+                ans[0] = Math.Sqrt(
+                    Math.Pow(spider_y - myha_y, 2) +
+                    Math.Pow(spider_z + (korob_z - myha_z), 2)
+                );  
+
+                // через пол
+                ans[1] = Math.Sqrt(
+                    Math.Pow(spider_y - myha_y, 2) +
+                    Math.Pow((korob_z - spider_z) + myha_z, 2)
+                );
+
+                // через переднюю стену
+                ans[2] = Math.Sqrt(
+                    Math.Pow(spider_z - myha_z, 2) +
+                    Math.Pow(spider_y + (korob_y - myha_y), 2)
+                );
+
+                // через заднюю стену
+                ans[3] = Math.Sqrt(
+                    Math.Pow(spider_z - myha_z, 2) +
+                    Math.Pow((korob_y - spider_y) + myha_y, 2)
+                );
+            }
+
+            double result = ans.Min();
+            Console.WriteLine($"{result:F3}");
+
+            // ------------------------------------------------------------
+
+        }
+        else
+        {
+            Console.WriteLine("Паук и муха находятся на соседних сторонах");
+            double answer = double.MaxValue;
+
+            // паук на y=0, муха на x=a
+            if (spider_y == 0 && myha_x == korob_x || myha_y == 0 && spider_x == korob_x)
+            {
+                double dx = spider_x + myha_y;
+                double dz = Math.Abs(spider_z - myha_z);
+                answer = Math.Sqrt(dx * dx + dz * dz);
+            }
+
+            // паук на y=0, муха на x=0
+            if (spider_y == 0 && myha_x == 0 || myha_y == 0 && spider_x == 0)
+            {
+                double dx = Math.Abs(spider_x - myha_y);
+                double dz = Math.Abs(spider_z - myha_z);
+                answer = Math.Min(answer, Math.Sqrt(dx * dx + dz * dz));
+            }
+
+            // паук на z=0, муха на x=a
+            if (spider_z == 0 && myha_x == korob_x || myha_z == 0 && spider_x == korob_x)
+            {
+                double dx = spider_x + myha_z;
+                double dy = Math.Abs(spider_y - myha_y);
+                answer = Math.Min(answer, Math.Sqrt(dx * dx + dy * dy));
+            }
+
+            // аналогично для остальных комбинаций (x/y/z)
+
+            Console.WriteLine($"{answer:F3}");
+
+            
+        }
+
         
         
     }
